@@ -44,21 +44,22 @@ func (c App) LamdaApi() revel.Result {
 		deskChannel <- lambdaReq
 		if sent := <-lambdaRespChan; sent {
 			resp.Data = `The fornt desk has recived your request successfully,
-			 You can expect delivery of " + lambdaReq.Data + "shortly`
+			 You can expect delivery of ` + lambdaReq.Data + `shortly`
 		}
+		return c.RenderJSON(resp)
 	case "checkout":
 		deskChannel <- lambdaReq
 		if sent := <-lambdaRespChan; sent {
 			resp.Data = `The fornt desk has recived your request for Checkout,
 			 You can visit the reception and return the keys of your room `
 		}
-		resp.Data = ""
+		return c.RenderJSON(resp)
 	case "registerEcho":
 		deskChannel <- lambdaReq
 		if sent := <-lambdaRespChan; sent {
 			resp.Data = "ECHO device successfully registerd to room number " + lambdaReq.Data
 		}
-
+		return c.RenderJSON(resp)
 	default:
 		resp.Data = ""
 	}
